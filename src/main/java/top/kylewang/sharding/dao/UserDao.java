@@ -18,7 +18,7 @@ import java.util.List;
  * @date 2019年03月05日
  */
 @Repository
-public class ShardingDao {
+public class UserDao {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -44,13 +44,14 @@ public class ShardingDao {
 		}
 	}
 
-	public void insert(int userid, String name, String phone) {
+	public boolean insert(int userid, String name, String phone) {
 		String sql = "INSERT INTO user(`userid`, `name`, `phone`, `createTime`) VALUES (?, ?, ?, NOW());";
 		List<Object> args = new ArrayList<>();
 		args.add(userid);
 		args.add(name);
 		args.add(phone);
 		jdbcTemplate.update(sql, args.toArray());
+		return true;
 	}
 
 	public List<User> queryByTime(String start, String end) {
