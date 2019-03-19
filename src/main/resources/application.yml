@@ -1,0 +1,54 @@
+server:
+  port: 8090
+logging:
+  level:
+    org.springframework.jdbc.core: debug
+    io.shardingsphere.shardingjdbc: debug
+sharding:
+  jdbc:
+    datasource:
+      names: ds0,ds1,ds2,ds3
+      ds0:
+        name: sharding0
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/sharding0?useUnicode=true&characterEncoding=utf8
+        username: root
+        password: rootpass
+      ds1:
+        name: sharding1
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/sharding1?useUnicode=true&characterEncoding=utf8
+        username: root
+        password: rootpass
+      ds2:
+        name: sharding2
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/sharding2?useUnicode=true&characterEncoding=utf8
+        username: root
+        password: rootpass
+      ds3:
+        name: sharding3
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/sharding3?useUnicode=true&characterEncoding=utf8
+        username: root
+        password: rootpass
+    config:
+      props:
+        sql:
+          show: true
+      sharding:
+        tables:
+          user:
+            actual-data-nodes: ds0.user_${0..7},ds1.user_${8..15},ds2.user_${16..23},ds3.user_${24..31}
+            database-strategy:
+              standard:
+                sharding-column: userid
+                precise-algorithm-class-name: top.kylewang.sharding.sharding.ShardingDatabaseAlgorithmConfig
+            table-strategy:
+              standard:
+                sharding-column: userid
+                precise-algorithm-class-name: top.kylewang.sharding.sharding.ShardingTableAlgorithmConfig
