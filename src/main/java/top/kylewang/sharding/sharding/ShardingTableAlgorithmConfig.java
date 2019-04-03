@@ -1,7 +1,9 @@
 package top.kylewang.sharding.sharding;
 
 import io.shardingsphere.api.algorithm.sharding.PreciseShardingValue;
+import io.shardingsphere.api.algorithm.sharding.RangeShardingValue;
 import io.shardingsphere.api.algorithm.sharding.standard.PreciseShardingAlgorithm;
+import io.shardingsphere.api.algorithm.sharding.standard.RangeShardingAlgorithm;
 
 import java.util.Collection;
 
@@ -10,7 +12,7 @@ import java.util.Collection;
  * @version 1.0
  * @date 2019年03月05日
  */
-public class ShardingTableAlgorithmConfig implements PreciseShardingAlgorithm<Integer> {
+public class ShardingTableAlgorithmConfig implements PreciseShardingAlgorithm<Integer> , RangeShardingAlgorithm<Integer> {
 
 	@Override
 	public String doSharding(Collection<String> availableTargetNames, PreciseShardingValue<Integer> shardingValue) {
@@ -23,5 +25,10 @@ public class ShardingTableAlgorithmConfig implements PreciseShardingAlgorithm<In
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public Collection<String> doSharding(Collection<String> availableTargetNames, RangeShardingValue<Integer> shardingValue) {
+		return availableTargetNames;
 	}
 }

@@ -76,4 +76,16 @@ public class UserDao {
 			return null;
 		}
 	}
+
+	public List<User> queryByRange(int start, int end) {
+		String sql = "SELECT * FROM user WHERE `userid` BETWEEN ? AND ?";
+		List<Object> args = new ArrayList<>();
+		args.add(start);
+		args.add(end);
+		try {
+			return jdbcTemplate.query(sql, args.toArray(), userRow);
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
 }
